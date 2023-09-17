@@ -3,8 +3,8 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-
 const router = useRouter();
+
 interface User {
   id: number;
   name: string;
@@ -14,18 +14,15 @@ interface User {
 
 let users: User[];
 
-var validado = false;
 
 function onSubmit(){
   axios
   .get<User[]>("http://localhost:5044/UserTask")
   .then((res) => {
      users = res.data;
-     const aaa = users.map((user) => {
+     users.map((user) => {
       if(user.email == email.value && user.password == password.value){
-        console.log('usuario validado')
-        validado = true;
-        router.push('/task');
+        router.push(`/task/${user.id}`);
       }
       })
   })

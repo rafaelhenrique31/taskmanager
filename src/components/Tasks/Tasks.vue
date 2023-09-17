@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
+const props = defineProps<{
+  userId: number;
+}>();
+
 </script>
 
 <template>
     <div >
-   efepfmeopfmeomeomvoemvom
+     idjwodwpodwopdmo {{ props.userId }}
   </div>
 </template>
 

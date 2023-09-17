@@ -10,7 +10,7 @@ const routes = [
         component:Home,
     },
     {
-        path: "/task",
+        path: "/task/:userId",
         name: 'Task',
         component: lazyLoad("Task"),
     },
