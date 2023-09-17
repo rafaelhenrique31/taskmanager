@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+
+const router = useRouter();
 interface User {
   id: number;
   name: string;
@@ -21,6 +25,7 @@ function onSubmit(){
       if(user.email == email.value && user.password == password.value){
         console.log('usuario validado')
         validado = true;
+        router.push('/task');
       }
       })
   })
@@ -47,6 +52,8 @@ const password = ref("");
       </div>
       <button type="submit">Login</button>
     </form>
+  </div>
+  <div >
   </div>
 </template>
 
