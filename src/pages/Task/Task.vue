@@ -21,47 +21,89 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="ag-courses_box">
-    <div v-for="task in tasks" :key="task.id" class="ag-courses_item">
-      <a href="#" class="ag-courses-item_link">
-        <div class="ag-courses-item_bg"></div>
-        <span>Task</span>
-        <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
-        <div class="ag-courses-item_title">
-          Descrição: {{ task.description }}
-        </div>
-        <div class="ag-courses-item_title">
-          status:
-          {{
-            task.status == 1
-              ? "Criado"
-              : task.status == 2
-              ? "Em progresso"
-              : "Finalizado"
-          }}
-        </div>
-        <div class="ag-courses-item_title">
-          priority:
-          {{
-            task.priority == 1
-              ? "Média"
-              : task.priority == 2
-              ? "Urgente"
-              : "Baixa"
-          }}
-        </div>
-        <div class="ag-courses-item_date-box">
-          Data da criação: {{ task.createAt }}
-        </div>
-        <div class="ag-courses-item_date-box">
-          Data estimada para conclusão: {{ task.estimatedDate }}
-        </div>
-      </a>
+  <div class="ag-format-container">
+    <div class="ag-courses_box">
+      <div v-for="task in tasks" :key="task.id" class="ag-courses_item">
+        <a href="#" class="ag-courses-item_link">
+          <div class="ag-courses-item_bg"></div>
+          <span>Task</span>
+          <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
+          <div class="ag-courses-item_title">
+            Descrição: {{ task.description }}
+          </div>
+          <div class="ag-courses-item_title">
+            status:
+            {{
+              task.status == 1
+                ? "Criado"
+                : task.status == 2
+                ? "Em progresso"
+                : "Finalizado"
+            }}
+          </div>
+          <div class="ag-courses-item_title">
+            priority:
+            {{
+              task.priority == 1
+                ? "Média"
+                : task.priority == 2
+                ? "Urgente"
+                : "Baixa"
+            }}
+          </div>
+          <div class="ag-courses-item_date-box">
+            Data da criação: {{ task.createAt }}
+          </div>
+          <div class="ag-courses-item_date-box">
+            Data estimada para conclusão: {{ task.estimatedDate }}
+          </div>
+        </a>
+      </div>
     </div>
+  </div>
+
+  <div class="footer-buttons">
+    <button class="button1">Atualizar Tasks</button>
+    <button class="button2">Criar uma nova Task</button>
   </div>
 </template>
 
 <style>
+.button1 {
+  border-radius: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+  max-width: 200px;
+  background-color: #121212;
+}
+
+.button2 {
+  border-radius: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+  max-width: 200px;
+  background-color: #121212;
+}
+
+.button1:hover {
+  background-color: black;
+}
+
+.button2:hover {
+  background-color: black;
+}
+
+.footer-buttons {
+  display: flex; /* Use flex para alinhar os botões horizontalmente */
+  justify-content: flex-end;
+  padding-left: 75%;
+  padding-top: 8%;
+}
+
+.ag-format-container {
+  background-color: #000;
+}
+
 body {
   background-color: #000;
 }
