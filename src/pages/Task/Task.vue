@@ -9,12 +9,28 @@ const router = useRoute();
 const routerPush = useRouter();
 const id = Number(router.params.userId);
 const useTaskStore = UseTask();
-const tasks = ref<TaskGetResponse[]>();
+
+const tasks = ref<TaskGetResponse[]>([]);
+const tasksFinish = ref<TaskGetResponse[]>([]);
 
 async function getTasks(userId: number) {
   try {
     var response = await useTaskStore.getTaskByUserId(userId);
-    tasks.value = response;
+
+    if (!tasks.value) {
+      tasks.value = [];
+    }
+
+    if (!tasksFinish.value) {
+      tasksFinish.value = [];
+    }
+    response.map((item) => {
+      if (item.status == 3) {
+        tasksFinish.value.push(item);
+      } else {
+        tasks.value.push(item);
+      }
+    });
   } catch (error) {}
 }
 
@@ -70,6 +86,44 @@ onBeforeMount(async () => {
           </div>
         </a>
       </div>
+      <div class="divisor">Tasks Finalizadas</div>
+
+      <div v-for="task in tasksFinish" :key="task.id" class="ag-courses_item">
+        <a @click="UpdateTask(task.id)" href="#" class="ag-courses-item_link">
+          <div class="ag-courses-item_bg"></div>
+          <span>Task</span>
+          <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
+          <div class="ag-courses-item_title">
+            Descrição: {{ task.description }}
+          </div>
+          <div class="ag-courses-item_title">
+            status:
+            {{
+              task.status == 1
+                ? "Criado"
+                : task.status == 2
+                ? "Em progresso"
+                : "Finalizado"
+            }}
+          </div>
+          <div class="ag-courses-item_title">
+            priority:
+            {{
+              task.priority == 1
+                ? "Média"
+                : task.priority == 2
+                ? "Urgente"
+                : "Baixa"
+            }}
+          </div>
+          <div class="ag-courses-item_date-box">
+            Data da criação: {{ task.createAt }}
+          </div>
+          <div class="ag-courses-item_date-box">
+            Data estimada para conclusão: {{ task.estimatedDate }}
+          </div>
+        </a>
+      </div>
     </div>
   </div>
   <div class="footer-buttons">
@@ -79,6 +133,15 @@ onBeforeMount(async () => {
 </template>
 
 <style>
+.divisor {
+  background-color: aliceblue;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 30px;
+  margin-bottom: 30px;
+}
 .button1 {
   border-radius: 10px;
   margin-right: 10px;
