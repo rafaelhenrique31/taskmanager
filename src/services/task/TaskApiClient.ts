@@ -3,7 +3,7 @@ import TaskService from "./TaskService";
 import { ENV } from "../../lib/env";
 
 export const TaskApiClient = axios.create({
-  baseURL: ENV.urlTaskManager,
+  baseURL: "http://localhost:5044/",
 });
 
 export const TASK_CLIENT = {

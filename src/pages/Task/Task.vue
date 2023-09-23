@@ -1,52 +1,192 @@
 <script setup lang="ts">
-import axios from "axios";
-import Tasks from "../../components/Tasks/Tasks.vue";
 import { useRoute } from "vue-router";
-import { useFetch } from "../../composables/fetch";
-import { computed } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
+import { UseTask } from "../../composables/UseTask";
+import { TaskGetResponse } from "services/task/types";
 
 const router = useRoute();
-
-interface Task {
-  id: number;
-  title: string;
-  description: string;
-  createAt: Date;
-  completionDate: Date;
-  estimatedDate: Date;
-  status: number;
-  priority: number;
-  userTaskId: number;
-}
 const id = Number(router.params.userId);
+const useTaskStore = UseTask();
+const tasks = ref<TaskGetResponse[]>();
 
-const { isFetching, error, data } = useFetch(
-  `http://localhost:5044/Task/${id}`
-);
-
-const allTasks = computed(() => {
-  if (!data) return [];
-  return data;
-});
-
-let tasks: Task[];
-
-function onSubmit() {
-  axios
-    .get<Task[]>(`http://localhost:5044/Task/${id}`)
-    .then((res) => {
-      tasks = res.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+async function getTasks(userId: number) {
+  try {
+    var response = await useTaskStore.getTaskByUserId(userId);
+    tasks.value = response;
+  } catch (error) {}
 }
+onBeforeMount(async () => {
+  await getTasks(id);
+});
 </script>
 
 <template>
-  <div v-for="task in data">
-    <span>{{ task }}</span>
+  <div class="ag-courses_box">
+    <div v-for="task in tasks" :key="task.id" class="ag-courses_item">
+      <a href="#" class="ag-courses-item_link">
+        <div class="ag-courses-item_bg"></div>
+        <span>Task</span>
+        <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
+        <div class="ag-courses-item_title">
+          Descrição: {{ task.description }}
+        </div>
+        <div class="ag-courses-item_title">
+          status:
+          {{
+            task.status == 1
+              ? "Criado"
+              : task.status == 2
+              ? "Em progresso"
+              : "Finalizado"
+          }}
+        </div>
+        <div class="ag-courses-item_title">
+          priority:
+          {{
+            task.priority == 1
+              ? "Média"
+              : task.priority == 2
+              ? "Urgente"
+              : "Baixa"
+          }}
+        </div>
+        <div class="ag-courses-item_date-box">
+          Data da criação: {{ task.createAt }}
+        </div>
+        <div class="ag-courses-item_date-box">
+          Data estimada para conclusão: {{ task.estimatedDate }}
+        </div>
+      </a>
+    </div>
   </div>
 </template>
 
-<style></style>
+<style>
+body {
+  background-color: #000;
+}
+.ag-courses_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 50px 0;
+}
+.ag-courses_item {
+  -ms-flex-preferred-size: calc(33.33333% - 30px);
+  flex-basis: calc(33.33333% - 30px);
+  margin: 0 15px 30px;
+  overflow: hidden;
+  border-radius: 28px;
+}
+.ag-courses-item_link {
+  display: block;
+  padding: 30px 20px;
+  background-color: #121212;
+  overflow: hidden;
+  position: relative;
+}
+.ag-courses-item_link:hover,
+.ag-courses-item_link:hover .ag-courses-item_date {
+  text-decoration: none;
+  color: #fff;
+}
+.ag-courses-item_link:hover .ag-courses-item_bg {
+  -webkit-transform: scale(10);
+  -ms-transform: scale(10);
+  transform: scale(10);
+}
+.ag-courses-item_title {
+  min-height: 60px;
+  overflow: hidden;
+  font-weight: bold;
+  font-size: 30px;
+  color: #fff;
+  z-index: 2;
+  position: relative;
+}
+.ag-courses-item_date-box {
+  font-size: 23px;
+  color: #fff;
+  z-index: 2;
+  position: relative;
+  font-weight: bold;
+}
+.ag-courses-item_date {
+  font-weight: bold;
+  color: #f9b234;
+
+  -webkit-transition: color 0.5s ease;
+  -o-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+.ag-courses-item_bg {
+  height: 128px;
+  width: 128px;
+  background-color: #f9b234;
+
+  z-index: 1;
+  position: absolute;
+  top: -75px;
+  right: -75px;
+
+  border-radius: 50%;
+
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+  background-color: #3ecd5e;
+}
+.ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+  background-color: #e44002;
+}
+.ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+  background-color: #952aff;
+}
+.ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+  background-color: #cd3e94;
+}
+.ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+  background-color: #4c49ea;
+}
+
+@media only screen and (max-width: 979px) {
+  .ag-courses_item {
+    -ms-flex-preferred-size: calc(50% - 30px);
+    flex-basis: calc(50% - 30px);
+  }
+  .ag-courses-item_title {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .ag-format-container {
+    width: 96%;
+  }
+}
+@media only screen and (max-width: 639px) {
+  .ag-courses_item {
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+  }
+  .ag-courses-item_title {
+    min-height: 72px;
+    line-height: 1;
+
+    font-size: 24px;
+  }
+  .ag-courses-item_link {
+    padding: 22px 40px;
+  }
+  .ag-courses-item_date-box {
+    font-size: 16px;
+  }
+}
+</style>

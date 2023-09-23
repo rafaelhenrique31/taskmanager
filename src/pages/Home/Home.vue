@@ -10,14 +10,13 @@ const tasks = ref<TaskGetResponse[]>();
 
 async function getAllTasks() {
   try {
-    var response = await useTaskStore.getTask();
-    console.log(response);
+    var response = await useTaskStore.getAllTask();
+    tasks.value = response;
   } catch (error) {}
 }
 </script>
 
 <template>
-  <button @click="getAllTasks">> aaa</button>
   <Login></Login>
 </template>
 

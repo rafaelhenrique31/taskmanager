@@ -1,11 +1,16 @@
 import { TASK_CLIENT } from "../services/task/TaskApiClient";
 
 export function UseTask() {
-  const getTask = async () => {
+  const getAllTask = async () => {
     return await TASK_CLIENT.TASK.getAllTasks();
   };
 
+  const getTaskByUserId = async (userId: number) => {
+    return await TASK_CLIENT.TASK.getTaskByUserId(userId);
+  };
+
   return {
-    getTask,
+    getAllTask,
+    getTaskByUserId,
   };
 }

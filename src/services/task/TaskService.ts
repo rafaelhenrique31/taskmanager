@@ -11,7 +11,13 @@ class TaskService {
 
   getAllTasks = async () => {
     const url = `${this.BASE_PATH}`;
-    const response = await this.httpClient.get<TaskGetResponse>(url);
+    const response = await this.httpClient.get<TaskGetResponse[]>(url);
+    return response.data;
+  };
+
+  getTaskByUserId = async (userId: number) => {
+    const url = `${this.BASE_PATH}/${userId}`;
+    const response = await this.httpClient.get<TaskGetResponse[]>(url);
     return response.data;
   };
 }
