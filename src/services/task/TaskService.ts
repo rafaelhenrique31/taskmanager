@@ -1,4 +1,4 @@
-import type { TaskGetResponse, TaskPostRequest } from "./types";
+import type { TaskGetResponse, TaskPostRequest, TaskPutRequest } from "./types";
 import type { AxiosInstance } from "axios";
 
 class TaskService {
@@ -23,8 +23,12 @@ class TaskService {
 
   createTask = async (body: TaskPostRequest) => {
     const url = `${this.BASE_PATH}`;
-    console.log(url);
     await this.httpClient.post(url, body);
+  };
+
+  updateTask = async (taskId: number, body: TaskPutRequest) => {
+    const url = `${this.BASE_PATH}/${taskId}/Status`;
+    await this.httpClient.put(url, body);
   };
 }
 

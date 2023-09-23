@@ -1,4 +1,4 @@
-import { TaskPostRequest } from "services/task/types";
+import { TaskPostRequest, TaskPutRequest } from "services/task/types";
 import { TASK_CLIENT } from "../services/task/TaskApiClient";
 
 export function UseTask() {
@@ -14,9 +14,14 @@ export function UseTask() {
     return await TASK_CLIENT.TASK.createTask(body);
   };
 
+  const updateTask = async (taskId: number, body: TaskPutRequest) => {
+    return await TASK_CLIENT.TASK.updateTask(taskId, body);
+  };
+
   return {
     getAllTask,
     getTaskByUserId,
     createTask,
+    updateTask,
   };
 }

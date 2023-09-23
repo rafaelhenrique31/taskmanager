@@ -9,7 +9,6 @@ export interface TaskGetResponse {
   priority: number;
   userTaskId: number;
 }
-
 export interface TaskPostRequest {
   title: string;
   description: string;
@@ -17,4 +16,8 @@ export interface TaskPostRequest {
   priority: number;
   status: number;
   userTaskId: number;
+}
+export interface TaskPutRequest {
+  completionDate: Date;
+  statusEnum: number;
 }

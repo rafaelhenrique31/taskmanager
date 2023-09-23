@@ -22,6 +22,10 @@ function creattTask(userId: number) {
   routerPush.push(`/CreateTask/${userId}`);
 }
 
+function UpdateTask(taskId: number) {
+  routerPush.push(`/updateTask/${id}/${taskId}`);
+}
+
 onBeforeMount(async () => {
   await getTasks(id);
 });
@@ -31,7 +35,7 @@ onBeforeMount(async () => {
   <div class="ag-format-container">
     <div class="ag-courses_box">
       <div v-for="task in tasks" :key="task.id" class="ag-courses_item">
-        <a href="#" class="ag-courses-item_link">
+        <a @click="UpdateTask(task.id)" href="#" class="ag-courses-item_link">
           <div class="ag-courses-item_bg"></div>
           <span>Task</span>
           <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
@@ -144,9 +148,9 @@ body {
   color: #fff;
 }
 .ag-courses-item_link:hover .ag-courses-item_bg {
-  -webkit-transform: scale(10);
+  /* -webkit-transform: scale(10);
   -ms-transform: scale(10);
-  transform: scale(10);
+  transform: scale(10); */
 }
 .ag-courses-item_title {
   min-height: 60px;
