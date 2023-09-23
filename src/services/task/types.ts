@@ -9,3 +9,12 @@ export interface TaskGetResponse {
   priority: number;
   userTaskId: number;
 }
+
+export interface TaskPostRequest {
+  title: string;
+  description: string;
+  estimatedDate: Date;
+  priority: number;
+  status: number;
+  userTaskId: number;
+}

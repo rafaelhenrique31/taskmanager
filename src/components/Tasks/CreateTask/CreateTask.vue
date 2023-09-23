@@ -1,25 +1,47 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { UseTask } from "../../../composables/UseTask";
+import { TaskPostRequest } from "services/task/types";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const useTaskStore = UseTask();
 
 const props = defineProps<{
   userId: number;
 }>();
 
-function createTaskAsync() {}
+async function createTaskAsync() {
+  try {
+    const body = {
+      userTaskId: props.userId,
+      description: description.value,
+      title: title.value,
+      estimatedDate: estimatedDate.value,
+      priority: Number(priority.value),
+      status: Number(status.value),
+    } as TaskPostRequest;
+    await useTaskStore.createTask(body);
+  } catch (e) {
+    console.log(e);
+  } finally {
+    router.push(`/task/${props.userId}`);
+  }
+}
 
 const title = ref("");
 const description = ref("");
-const estimatedDate = ref("");
+const estimatedDate = ref(new Date());
 const priority = ref("");
 const status = ref("");
 const id = ref("");
 </script>
 
 <template>
-  <div class="form">
+  <div class="center-div form">
     <h2>Criar Registro</h2>
     <form @submit.prevent="createTaskAsync">
-      <div>
+      <div class="title">
         <label for="title">Título:</label>
         <input type="text" id="title" v-model="title" required />
       </div>
@@ -27,7 +49,7 @@ const id = ref("");
         <label for="description">Descrição:</label>
         <textarea id="description" v-model="description" required></textarea>
       </div>
-      <div>
+      <div class="estimatedDate_date">
         <label for="estimatedDate">Data estimada:</label>
         <input
           type="datetime-local"
@@ -59,13 +81,32 @@ const id = ref("");
 
 <style>
 .form {
-  background-color: aliceblue;
-  width: 50%;
-  padding: 20px;
-  margin: 10% 0 0 20%;
+  background-color: #121212;
+  color: aliceblue;
+  min-width: 700px;
+}
+
+.center-div {
+  position: absolute;
+  top: 50%; /* Move a div para o meio verticalmente */
+  left: 50%; /* Move a div para o meio horizontalmente */
+  transform: translate(-50%, -50%); /* Centraliza a div */
+}
+
+.estimatedDate_date {
+  max-width: 100px;
+}
+
+.title {
+  max-width: 250px;
 }
 
 .button {
   margin-top: 30px;
+  background-color: dimgrey;
+}
+
+.button:hover {
+  background-color: black;
 }
 </style>
