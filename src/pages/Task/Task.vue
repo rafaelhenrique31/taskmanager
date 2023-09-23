@@ -137,10 +137,11 @@ onBeforeMount(async () => {
   background-color: aliceblue;
   width: 100%;
   display: flex;
-  align-content: center;
-  align-items: center;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
   height: 30px;
   margin-bottom: 30px;
+  font-size: 30px;
 }
 .button1 {
   border-radius: 10px;
