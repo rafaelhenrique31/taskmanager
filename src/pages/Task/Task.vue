@@ -3,8 +3,10 @@ import { useRoute } from "vue-router";
 import { computed, onBeforeMount, ref } from "vue";
 import { UseTask } from "../../composables/UseTask";
 import { TaskGetResponse } from "services/task/types";
+import { useRouter } from "vue-router";
 
 const router = useRoute();
+const routerPush = useRouter();
 const id = Number(router.params.userId);
 const useTaskStore = UseTask();
 const tasks = ref<TaskGetResponse[]>();
@@ -15,6 +17,11 @@ async function getTasks(userId: number) {
     tasks.value = response;
   } catch (error) {}
 }
+
+function creattTask(userId: number) {
+  routerPush.push(`/CreateTask/${userId}`);
+}
+
 onBeforeMount(async () => {
   await getTasks(id);
 });
@@ -61,10 +68,9 @@ onBeforeMount(async () => {
       </div>
     </div>
   </div>
-
   <div class="footer-buttons">
-    <button class="button1">Atualizar Tasks</button>
-    <button class="button2">Criar uma nova Task</button>
+    <button class="button1" @click="getTasks(id)">Atualizar Tasks</button>
+    <button class="button2" @click="creattTask(id)">Criar uma nova Task</button>
   </div>
 </template>
 

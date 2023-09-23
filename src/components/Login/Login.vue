@@ -14,48 +14,44 @@ interface User {
 
 let users: User[];
 
-
-function onSubmit(){
+function onSubmit() {
   axios
-  .get<User[]>("http://localhost:5044/UserTask")
-  .then((res) => {
-     users = res.data;
-     users.map((user) => {
-      if(user.email == email.value && user.password == password.value){
-        router.push(`/task/${user.id}`);
-      }
-      })
-  })
-  .catch((error) => {
-          console.log(error);
-  });
-};
+    .get<User[]>("http://localhost:5044/UserTask")
+    .then((res) => {
+      users = res.data;
+      users.map((user) => {
+        if (user.email == email.value && user.password == password.value) {
+          router.push(`/task/${user.id}`);
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 const email = ref("");
 const password = ref("");
-
 </script>
 
 <template>
-    <div class="login-form">
+  <div class="login-form">
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" v-model=email>
+        <input type="email" id="email" v-model="email" />
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" v-model=password>
+        <input type="password" id="password" v-model="password" />
       </div>
       <button type="submit">Login</button>
     </form>
   </div>
-  <div >
-  </div>
+  <div></div>
 </template>
 
 <style>
-
 .login-form {
   width: 300px;
   margin: 0 auto;
@@ -86,5 +82,4 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
-
 </style>
