@@ -30,6 +30,11 @@ class TaskService {
     const url = `${this.BASE_PATH}/${taskId}/Status`;
     await this.httpClient.put(url, body);
   };
+
+  deleteTask = async (taskId: number) => {
+    const url = `${this.BASE_PATH}/${taskId}`;
+    await this.httpClient.delete(url);
+  };
 }
 
 export default TaskService;

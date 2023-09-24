@@ -36,12 +36,21 @@ async function getTasks(userId: number) {
 
 function creattTask(userId: number) {
   routerPush.push(`/CreateTask/${userId}`);
+  getTasks(id);
 }
 
 function UpdateTask(taskId: number) {
   routerPush.push(`/updateTask/${id}/${taskId}`);
 }
+const showModal = ref(false);
 
+async function deleteTask(taskId: number) {
+  await useTaskStore.deleteTask(taskId);
+}
+
+function abrirModal() {
+  showModal.value = true;
+}
 onBeforeMount(async () => {
   await getTasks(id);
 });
@@ -85,12 +94,24 @@ onBeforeMount(async () => {
             Data estimada para conclusão: {{ task.estimatedDate }}
           </div>
         </a>
+        <div class="div-delete">
+          <button class="btn-delete" @click="abrirModal">Deletar</button>
+        </div>
+        <div class="modal" v-if="showModal">
+          <div class="modal-content">
+            <p>Tem certeza de que deseja excluir?</p>
+            <button @click="deleteTask(task.id)">Sim</button>
+            <button class="btn-delete" @click="showModal = false">
+              Cancelar
+            </button>
+          </div>
+        </div>
       </div>
       <div class="divisor">Tasks Finalizadas</div>
 
       <div v-for="task in tasksFinish" :key="task.id" class="ag-courses_item">
-        <a @click="UpdateTask(task.id)" href="#" class="ag-courses-item_link">
-          <div class="ag-courses-item_bg"></div>
+        <a href="#" class="ag-courses-item_link">
+          <div @click="UpdateTask(task.id)" class="ag-courses-item_bg"></div>
           <span>Task</span>
           <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
           <div class="ag-courses-item_title">
@@ -122,7 +143,13 @@ onBeforeMount(async () => {
           <div class="ag-courses-item_date-box">
             Data estimada para conclusão: {{ task.estimatedDate }}
           </div>
+          <div class="div-delete">
+            <button class="btn-delete">Deletar</button>
+          </div>
         </a>
+        <div class="div-delete">
+          <button class="btn-delete">Deletar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -133,6 +160,22 @@ onBeforeMount(async () => {
 </template>
 
 <style>
+.modal-content {
+  background-color: #3ecd5e;
+  color: red;
+}
+.div-delete {
+  display: flex;
+  align-content: flex-end;
+  align-items: center;
+}
+.btn-delete {
+  height: 50px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: #121212;
+}
+
 .divisor {
   background-color: aliceblue;
   width: 100%;
@@ -198,6 +241,7 @@ body {
   margin: 0 15px 30px;
   overflow: hidden;
   border-radius: 28px;
+  background-color: #121212;
 }
 .ag-courses-item_link {
   display: block;

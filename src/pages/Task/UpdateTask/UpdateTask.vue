@@ -30,11 +30,18 @@ async function updateTask() {
     routerPush.push(`/task/${userId}`);
   }
 }
+
+async function exitPage() {
+  routerPush.push(`/task/${userId}`);
+}
 </script>
 
 <template>
   <div class="form">
-    <h1 class="title">Atualizar Status Task</h1>
+    <div class="card-title">
+      <h1 class="title">Atualizar Status Task</h1>
+      <button @click="exitPage()" class="button-exit">X</button>
+    </div>
     <form @submit.prevent="updateTask">
       <div>
         <label class="status" for="status">Selecione o status atual:</label>
@@ -56,6 +63,18 @@ async function updateTask() {
 </template>
 
 <style>
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.button-exit {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #121212;
+  background-color: aliceblue;
+}
 .title {
   padding: 15px;
   max-width: 350px;

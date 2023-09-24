@@ -18,10 +18,15 @@ export function UseTask() {
     return await TASK_CLIENT.TASK.updateTask(taskId, body);
   };
 
+  const deleteTask = async (taskId: number) => {
+    return await TASK_CLIENT.TASK.deleteTask(taskId);
+  };
+
   return {
     getAllTask,
     getTaskByUserId,
     createTask,
     updateTask,
+    deleteTask,
   };
 }
