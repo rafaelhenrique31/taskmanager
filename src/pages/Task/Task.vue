@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { UseTask } from "../../composables/UseTask";
 import { TaskGetResponse } from "services/task/types";
 import { useRouter } from "vue-router";
+import Task from "../../components/Tasks/Tasks.vue";
 
 const router = useRoute();
 const routerPush = useRouter();
@@ -34,23 +35,11 @@ async function getTasks(userId: number) {
   } catch (error) {}
 }
 
-function creattTask(userId: number) {
+function creatTask(userId: number) {
   routerPush.push(`/CreateTask/${userId}`);
   getTasks(id);
 }
 
-function UpdateTask(taskId: number) {
-  routerPush.push(`/updateTask/${id}/${taskId}`);
-}
-const showModal = ref(false);
-
-async function deleteTask(taskId: number) {
-  await useTaskStore.deleteTask(taskId);
-}
-
-function abrirModal() {
-  showModal.value = true;
-}
 onBeforeMount(async () => {
   await getTasks(id);
 });
@@ -59,103 +48,14 @@ onBeforeMount(async () => {
 <template>
   <div class="ag-format-container">
     <div class="ag-courses_box">
-      <div v-for="task in tasks" :key="task.id" class="ag-courses_item">
-        <a @click="UpdateTask(task.id)" href="#" class="ag-courses-item_link">
-          <div class="ag-courses-item_bg"></div>
-          <span>Task</span>
-          <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
-          <div class="ag-courses-item_title">
-            Descrição: {{ task.description }}
-          </div>
-          <div class="ag-courses-item_title">
-            status:
-            {{
-              task.status == 1
-                ? "Criado"
-                : task.status == 2
-                ? "Em progresso"
-                : "Finalizado"
-            }}
-          </div>
-          <div class="ag-courses-item_title">
-            priority:
-            {{
-              task.priority == 1
-                ? "Média"
-                : task.priority == 2
-                ? "Urgente"
-                : "Baixa"
-            }}
-          </div>
-          <div class="ag-courses-item_date-box">
-            Data da criação: {{ task.createAt }}
-          </div>
-          <div class="ag-courses-item_date-box">
-            Data estimada para conclusão: {{ task.estimatedDate }}
-          </div>
-        </a>
-        <div class="div-delete">
-          <button class="btn-delete" @click="abrirModal">Deletar</button>
-        </div>
-        <div class="modal" v-if="showModal">
-          <div class="modal-content">
-            <p>Tem certeza de que deseja excluir?</p>
-            <button @click="deleteTask(task.id)">Sim</button>
-            <button class="btn-delete" @click="showModal = false">
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
+      <Task :userId="id" :tasks="tasks"> </Task>
       <div class="divisor">Tasks Finalizadas</div>
-
-      <div v-for="task in tasksFinish" :key="task.id" class="ag-courses_item">
-        <a href="#" class="ag-courses-item_link">
-          <div @click="UpdateTask(task.id)" class="ag-courses-item_bg"></div>
-          <span>Task</span>
-          <div class="ag-courses-item_title">Titulo: {{ task.title }}</div>
-          <div class="ag-courses-item_title">
-            Descrição: {{ task.description }}
-          </div>
-          <div class="ag-courses-item_title">
-            status:
-            {{
-              task.status == 1
-                ? "Criado"
-                : task.status == 2
-                ? "Em progresso"
-                : "Finalizado"
-            }}
-          </div>
-          <div class="ag-courses-item_title">
-            priority:
-            {{
-              task.priority == 1
-                ? "Média"
-                : task.priority == 2
-                ? "Urgente"
-                : "Baixa"
-            }}
-          </div>
-          <div class="ag-courses-item_date-box">
-            Data da criação: {{ task.createAt }}
-          </div>
-          <div class="ag-courses-item_date-box">
-            Data estimada para conclusão: {{ task.estimatedDate }}
-          </div>
-          <div class="div-delete">
-            <button class="btn-delete">Deletar</button>
-          </div>
-        </a>
-        <div class="div-delete">
-          <button class="btn-delete">Deletar</button>
-        </div>
-      </div>
+      <Task :userId="id" :tasks="tasksFinish"> </Task>
     </div>
   </div>
   <div class="footer-buttons">
     <button class="button1" @click="getTasks(id)">Atualizar Tasks</button>
-    <button class="button2" @click="creattTask(id)">Criar uma nova Task</button>
+    <button class="button2" @click="creatTask(id)">Criar uma nova Task</button>
   </div>
 </template>
 
@@ -255,11 +155,7 @@ body {
   text-decoration: none;
   color: #fff;
 }
-.ag-courses-item_link:hover .ag-courses-item_bg {
-  /* -webkit-transform: scale(10);
-  -ms-transform: scale(10);
-  transform: scale(10); */
-}
+
 .ag-courses-item_title {
   min-height: 60px;
   overflow: hidden;
